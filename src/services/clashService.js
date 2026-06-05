@@ -1,15 +1,13 @@
-const { Client } = require('clashofclans.js');
+import { Client } from 'clashofclans.js';
 
-// CoC-Client mit deinem API-Key initialisieren
 const cocClient = new Client({
     keys: [process.env.CLASH_OF_CLANS_TOKEN] 
 });
 
 /**
- * Holt die Clan-Statistiken (Mitglieder, Liga, Kriegslog)
- * @param {string} clanTag 
+ * Holt die Clan-Statistiken
  */
-async function getClanStats(clanTag) {
+export async function getClanStats(clanTag) {
     if (!clanTag.startsWith('#')) clanTag = `#${clanTag}`;
     
     try {
@@ -31,9 +29,8 @@ async function getClanStats(clanTag) {
 
 /**
  * Holt das Rathaus-Level (RH) eines Spielers
- * @param {string} playerTag 
  */
-async function getPlayerStats(playerTag) {
+export async function getPlayerStats(playerTag) {
     if (!playerTag.startsWith('#')) playerTag = `#${playerTag}`;
     
     try {
@@ -50,8 +47,3 @@ async function getPlayerStats(playerTag) {
         throw error;
     }
 }
-
-module.exports = {
-    getClanStats,
-    getPlayerStats
-};
