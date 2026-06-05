@@ -1,7 +1,7 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const clashService = require('../../services/clashService.js'); // Pfad anpassen, falls nötig
+import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
+import { getClanStats } from '../../services/clashService.js';
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName('clancheck')
         .setDescription('Zeigt Statistiken zu einem Clash of Clans Clan')
@@ -11,17 +11,17 @@ module.exports = {
                 .setRequired(true)),
 
     async execute(interaction) {
-        await interaction.deferReply(); // Gibt dem Bot Zeit für die API-Abfrage
+        await interaction.deferReply();
         
         const clanTag = interaction.options.getString('tag');
 
         try {
-            const clanData = await clashService.getClanStats(clanTag);
+            const clanData = await getClanStats(clanTag);
             const kriegslog = clanData.isWarLogPublic ? 'Öffentlich 🔓' : 'Privat 🔒';
 
             const embed = new EmbedBuilder()
                 .setTitle(`🛡️ Clan-Statistiken für ${clanData.name} (${clanData.tag})`)
-                .setColor(0xD4AF37) // Gold
+                .setColor(0xD4AF37)
                 .addFields(
                     { name: '👥 Mitglieder', value: `${clanData.memberCount} / 50`, inline: true },
                     { name: '🏆 Clan-Liga', value: `${clanData.liga}`, inline: true },
