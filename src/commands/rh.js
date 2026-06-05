@@ -1,7 +1,7 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const clashService = require('../../services/clashService.js');
+import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
+import { getPlayerStats } from '../../services/clashService.js';
 
-module.exports = {
+export default {
     data: new SlashCommandBuilder()
         .setName('rh')
         .setDescription('Zeigt das Rathaus-Level eines Spielers')
@@ -16,11 +16,11 @@ module.exports = {
         const playerTag = interaction.options.getString('tag');
 
         try {
-            const playerData = await clashService.getPlayerStats(playerTag);
+            const playerData = await getPlayerStats(playerTag);
 
             const embed = new EmbedBuilder()
                 .setTitle(`👤 Spieler: ${playerData.name} (${playerData.tag})`)
-                .setColor(0x0099FF) // Blau
+                .setColor(0x0099FF)
                 .addFields(
                     { name: '🏰 Rathaus (RH)', value: `Level ${playerData.townHall}`, inline: false },
                     { name: '🏆 Trophäen', value: `${playerData.trophies}`, inline: true },
